@@ -3,7 +3,7 @@
 // Oregon V2 decoder added - Dominique Pierre
 // New code to decode OOK signals from weather sensors, etc.
 // 2010-04-11 <jcw@equi4.com> http://opensource.org/licenses/mit-license.php
-// $Id: ookDecoder.pde 5331 2010-04-17 10:45:17Z jcw $
+
 
 #ifndef Oregon_h
 #define Oregon_h
@@ -12,7 +12,7 @@
 /*--------------------------
 Class DecodeOOK
 --------------------------*/
-class DecodeOOK
+class OOKDecoder
 {
 protected:
     byte total_bits, bits, flip, state, pos, data[25];
@@ -23,7 +23,7 @@ public:
 
     enum { UNKNOWN, T0, T1, T2, T3, OK, DONE };
 
-    DecodeOOK () { resetDecoder(); }
+    OOKDecoder () { resetDecoder(); }
 
     bool nextPulse (word width) {
         if (state != DONE)
@@ -113,7 +113,7 @@ public:
 /*--------------------------
 Class OregonDecoderV2
 --------------------------*/
-class OregonDecoderV2 : public DecodeOOK {
+class OregonDecoderV2 : public OOKDecoder {
   public:
 
     OregonDecoderV2() {}
@@ -287,7 +287,7 @@ const char* OregonType (const byte* data)
 }
 
 // Decode data once
-const byte* DataToDecoder (class DecodeOOK& decoder)
+const byte* DataToDecoder (class OOKDecoder& decoder)
 {
     byte pos;
     const byte* data = decoder.getData(pos);
